@@ -1,4 +1,4 @@
-name: Node.js CLI
+name: Node.js CI
 
 on:
   push:
@@ -14,25 +14,24 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14]
+        node-version: [20]
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
       - name: Cache Node.js modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
-           path: ~/.npm
-           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-           restore-keys: |
-             ${{ runner.os }}-node-
-
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
         run: npm install
